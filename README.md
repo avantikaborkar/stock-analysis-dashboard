@@ -14,11 +14,10 @@ Tech Stack
 - Pandas  
 - Plotly (for visualization)
 
-Learning Outcomes
-
-Through this project, I learned:
-- How stock market data is structured
-- Basics of technical analysis
-- How moving averages help in trend detection
-- Data visualization in Python
-- Basic backtesting logic
+Future Improvements
+I plan to upgrade this project by:
+- Replacing CSV-based input with real-time market data APIs
+- Removing heavy dependency on Pandas and optimizing logic using pure Python
+- Adding real trading simulation (paper trading)
+- Improving strategy logic (momentum, RSI, MACD, etc.)
+- Building a web dashboard for live visualization
