@@ -1,21 +1,27 @@
-def backtest(data, initial_cash=10000):
-    cash = initial_cash
+def backtest(data, initial_capital=100000):
     position = 0
-    portfolio_value = []
+    cash = initial_capital
+    portfolio_values = []
+
+
+    data['Signal'] = data['Signal'].fillna(0).astype(int)
 
     for i in range(len(data)):
-        price = data['Close'].iloc[i]
+        signal = int(data['Signal'].iloc[i])   # force scalar
+        price = float(data['Close'].iloc[i])
 
-        if data['Position'].iloc[i] == 1:  # BUY
-            position = cash // price
-            cash -= position * price
+        # Buy
+        if signal == 1 and position == 0:
+            position = cash / price
+            cash = 0
 
-        elif data['Position'].iloc[i] == -1:  # SELL
-            cash += position * price
+        # Sell
+        elif signal == -1 and position > 0:
+            cash = position * price
             position = 0
 
-        total = cash + position * price
-        portfolio_value.append(total)
+        portfolio_value = cash + (position * price)
+        portfolio_values.append(portfolio_value)
 
-    data['Portfolio'] = portfolio_value
+    data['Portfolio'] = portfolio_values
     return data

@@ -1,8 +1,5 @@
 def generate_signals(data):
     data['Signal'] = 0
-
-    data['Signal'] = (data['SMA_5'] > data['SMA_10']).astype(int)
-
-    data['Position'] = data['Signal'].diff()
-
+    data.loc[data['SMA_Short'] > data['SMA_Long'], 'Signal'] = 1
+    data.loc[data['SMA_Short'] < data['SMA_Long'], 'Signal'] = -1
     return data
