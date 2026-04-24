@@ -8,6 +8,7 @@ from src.indicators import add_sma
 from src.strategy import generate_signals
 from src.backtest import backtest
 from src.utils import calculate_metrics
+from src.utils import compute_returns, compute_volatility, max_drawdown
 
 
 
@@ -67,17 +68,22 @@ data.dropna(inplace=True)
 
 data = generate_signals(data)
 data = backtest(data)
+data = compute_returns(data)
 
+volatility = compute_volatility(data)
+mdd = max_drawdown(data['Portfolio'])
 final_value, return_pct, trades = calculate_metrics(data)
 
 
 # metrics
 st.markdown("Key Metrics")
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3, col4, col5 = st.columns(5)
 col1.metric("Final Value", f"₹{final_value:,.2f}")
 col2.metric("Return %", f"{return_pct:.2f}%")
 col3.metric("Trades", int(trades))
+col4.metric("Volatility", f"{volatility:.2f}")        #Volatility is the statistical measure of price fluctuations
+col5.metric("Max Drawdown", f"{mdd*100:.2f}%")
 
 
 # Multi-Stock Comparison

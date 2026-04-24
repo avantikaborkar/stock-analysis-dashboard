@@ -1,5 +1,18 @@
+import numpy as np
+
 def generate_signals(data):
-    data['Signal'] = 0
-    data.loc[data['SMA_Short'] > data['SMA_Long'], 'Signal'] = 1
-    data.loc[data['SMA_Short'] < data['SMA_Long'], 'Signal'] = -1
+    short = data['SMA_Short'].values
+    long = data['SMA_Long'].values
+
+    signal = np.zeros(len(data))
+
+    # Detect crossovers
+    signal[1:] = np.where(
+        (short[1:] > long[1:]) & (short[:-1] <= long[:-1]), 1,
+        np.where(
+            (short[1:] < long[1:]) & (short[:-1] >= long[:-1]), -1, 0
+        )
+    )
+
+    data['Signal'] = signal
     return data
